@@ -1,0 +1,10 @@
+{
+  "blockedIps": [
+    "142.250.185.206:443"
+  ],
+  "blockedApps": [
+    "YOUTUBE"
+  ],
+  "blockedDomains": [],
+  "blockedPorts": []
+}

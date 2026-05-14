@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+@theme
+ {
+  --color-graphite-950: #ffffff;
+  --color-graphite-900: #f8f9fa;
+  --color-graphite-800: #e9ecef;
+  --color-graphite-700: #dee2e6;
+  --color-graphite-600: #adb5bd;
+  --color-graphite-500: #6c757d;
+  --color-graphite-400: #495057;
+  --color-graphite-300: #343a40;
+  --color-graphite-200: #212529;
+  --color-accent: #3b82f6;
+  --color-accent-dim: #2563eb;
+  --color-emerald: #10b981;
+  --color-amber: #f59e0b;
+  --color-rose: #f43f5e;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* ─── Base ─────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background: #8d8b8b;
+  color: #1a1a1a;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Scrollbar ────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-graphite-700); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-graphite-600); }
+
+/* ─── Selection ────────────────────────────────── */
+::selection {
+  background: #114ba9;
+  color: #ffffff;
+}
+
+/* ─── Focus Ring ───────────────────────────────── */
+:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.5);
+  outline-offset: 2px;
+}
+
+/* ─── Recharts Customization ───────────────────── */
+.recharts-default-tooltip {
+  border-radius: 8px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* ─── Glow effects ─────────────────────────────── */
+.glow-accent {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.1), 0 0 60px rgba(59, 130, 246, 0.03);
+}
+
+.glow-emerald {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.1), 0 0 60px rgba(16, 185, 129, 0.03);
+}
+
+/* ─── Subtle pattern overlay ───────────────────── */
+.pattern-grid {
+  background-image:
+    linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+  background-size: 32px 32px;
+}

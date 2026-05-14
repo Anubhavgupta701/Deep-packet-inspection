@@ -1,0 +1,63 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+
+# Build output
+dist/
+dist-ssr/
+build/
+
+# Compiled binaries
+*.exe
+*.o
+*.obj
+*.out
+*.a
+*.lib
+*.so
+*.dylib
+dpi_engine
+
+# PCAP files (test/generated data)
+*.pcap
+
+# Build/error logs
+build_log.txt
+compile_errors.txt
+link_err.txt
+InstallationLog.txt
+
+# General logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+Thumbs.db
+
+# Local overrides
+*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo

@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "start-backend": "cd backend && docker-compose up --build",
+    "start-frontend": "cd frontend && npm run dev",
+    "dev": "concurrently \"npm:start-backend\" \"npm:start-frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
