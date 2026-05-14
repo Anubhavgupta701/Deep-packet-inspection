@@ -10,16 +10,16 @@ const fadeUp = { initial: { opacity: 0, y: 12 }, animate: { opacity: 1, y: 0 } }
 function Metric({ label, value, sub, icon, delay = 0, accent }) {
   return (
     <motion.div {...fadeUp} transition={{ delay, duration: 0.4 }}
-      className="relative bg-graphite-900 border border-graphite-700/30 rounded-xl px-5 py-4 overflow-hidden group hover:border-graphite-600/40 transition-colors duration-300">
+      className="relative bg-graphite-900 border border-graphite-700/30 rounded-xl px-4 sm:px-5 py-3 sm:py-4 overflow-hidden group hover:border-graphite-600/40 transition-colors duration-300">
       <div className="absolute top-0 right-0 w-20 h-20 rounded-full opacity-5 -translate-y-6 translate-x-6"
         style={{ background: accent || '#3b82f6' }} />
       <div className="flex items-start justify-between">
-        <div>
-          <p className="text-[10px] uppercase tracking-[0.15em] text-graphite-500 mb-1.5 font-medium">{label}</p>
-          <p className="text-2xl font-semibold text-graphite-200 font-mono tracking-tight">{value}</p>
+        <div className="min-w-0">
+          <p className="text-[10px] uppercase tracking-[0.15em] text-graphite-500 mb-1 sm:mb-1.5 font-medium">{label}</p>
+          <p className="text-xl sm:text-2xl font-semibold text-graphite-200 font-mono tracking-tight truncate">{value}</p>
           {sub && <p className="text-[11px] text-graphite-500 mt-1">{sub}</p>}
         </div>
-        {icon && <span className="text-2xl opacity-20 group-hover:opacity-30 transition-opacity">{icon}</span>}
+        {icon && <span className="text-xl sm:text-2xl opacity-20 group-hover:opacity-30 transition-opacity shrink-0 ml-2">{icon}</span>}
       </div>
     </motion.div>
   );
@@ -77,14 +77,14 @@ export default function Dashboard() {
     : `${(totalBytes / 1024).toFixed(1)} KB`;
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4 sm:space-y-5">
       {/* Header */}
-      <motion.div {...fadeUp} className="flex items-end justify-between">
+      <motion.div {...fadeUp} className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-4">
         <div>
-          <h2 className="text-xl font-semibold text-graphite-200 tracking-tight">Dashboard</h2>
-          <p className="text-sm text-graphite-500 mt-0.5">Information Extracted from PCAP data</p>
+          <h2 className="text-lg sm:text-xl font-semibold text-graphite-200 tracking-tight">Dashboard</h2>
+          <p className="text-xs sm:text-sm text-graphite-500 mt-0.5">Information Extracted from PCAP data</p>
         </div>
-        <div className="flex items-center gap-2 px-3 py-1.5 bg-graphite-900 border border-graphite-700/30 rounded-lg">
+        <div className="flex items-center gap-2 px-3 py-1.5 bg-graphite-900 border border-graphite-700/30 rounded-lg self-start sm:self-auto">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald" />
           <span className="text-[11px] font-mono text-graphite-500">
             {stats.totalPackets} packets analyzed
@@ -93,7 +93,7 @@ export default function Dashboard() {
       </motion.div>
 
       {/* Metrics row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
         <Metric label="Total Packets" value={stats.totalPackets.toLocaleString()} icon="⟐" delay={0.05} accent="#3b82f6" />
         <Metric label="Total Bytes" value={bytesDisplay} icon="◆" delay={0.1} accent="#10b981" />
         <Metric label="Active Sessions" value={stats.totalSessions} icon="⊡" delay={0.15} accent="#f59e0b" />
@@ -101,11 +101,11 @@ export default function Dashboard() {
       </div>
 
       {/* Charts row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
         {/* Protocol Distribution */}
         <motion.div {...fadeUp} transition={{ delay: 0.25 }}
-          className="bg-graphite-900 border border-graphite-700/30 rounded-xl p-5">
-          <h3 className="text-sm font-medium text-graphite-300 mb-4 flex items-center gap-2">
+          className="bg-graphite-900 border border-graphite-700/30 rounded-xl p-4 sm:p-5">
+          <h3 className="text-sm font-medium text-graphite-300 mb-3 sm:mb-4 flex items-center gap-2">
             <span className="w-1 h-3 rounded-full bg-accent" />
             Protocol Distribution
           </h3>
@@ -123,29 +123,31 @@ export default function Dashboard() {
 
         {/* App Classification */}
         <motion.div {...fadeUp} transition={{ delay: 0.3 }}
-          className="bg-graphite-900 border border-graphite-700/30 rounded-xl p-5">
-          <h3 className="text-sm font-medium text-graphite-300 mb-4 flex items-center gap-2">
+          className="bg-graphite-900 border border-graphite-700/30 rounded-xl p-4 sm:p-5">
+          <h3 className="text-sm font-medium text-graphite-300 mb-3 sm:mb-4 flex items-center gap-2">
             <span className="w-1 h-3 rounded-full bg-emerald" />
             Application Classification
           </h3>
-          <div className="flex items-center gap-4">
-            <ResponsiveContainer width={180} height={180}>
-              <PieChart>
-                <Pie data={appData} dataKey="value" cx="50%" cy="50%"
-                  innerRadius={50} outerRadius={78} paddingAngle={2} strokeWidth={0}>
-                  {appData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
-                </Pie>
-                <Tooltip content={<CustomTooltip />} />
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="flex-1 space-y-1.5 max-h-[180px] overflow-y-auto pr-2">
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            <div className="w-full sm:w-auto">
+              <ResponsiveContainer width="100%" height={180} minWidth={160}>
+                <PieChart>
+                  <Pie data={appData} dataKey="value" cx="50%" cy="50%"
+                    innerRadius={50} outerRadius={78} paddingAngle={2} strokeWidth={0}>
+                    {appData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                  </Pie>
+                  <Tooltip content={<CustomTooltip />} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="flex-1 space-y-1.5 max-h-[180px] overflow-y-auto pr-2 w-full sm:w-auto">
               {appData.slice(0, 10).map((d, i) => (
                 <div key={d.name} className="flex items-center justify-between text-xs group">
-                  <span className="flex items-center gap-2">
+                  <span className="flex items-center gap-2 min-w-0">
                     <span className="w-2.5 h-2.5 rounded-[3px] shrink-0" style={{ background: COLORS[i % COLORS.length] }} />
-                    <span className="text-graphite-400 group-hover:text-graphite-300 transition-colors">{d.name}</span>
+                    <span className="text-graphite-400 group-hover:text-graphite-300 transition-colors truncate">{d.name}</span>
                   </span>
-                  <span className="font-mono text-graphite-500 tabular-nums">{d.value}</span>
+                  <span className="font-mono text-graphite-500 tabular-nums ml-2 shrink-0">{d.value}</span>
                 </div>
               ))}
             </div>
@@ -156,8 +158,8 @@ export default function Dashboard() {
       {/* Traffic Timeline */}
       {timeline.length > 0 && (
         <motion.div {...fadeUp} transition={{ delay: 0.35 }}
-          className="bg-graphite-900 border border-graphite-700/30 rounded-xl p-5">
-          <h3 className="text-sm font-medium text-graphite-300 mb-4 flex items-center gap-2">
+          className="bg-graphite-900 border border-graphite-700/30 rounded-xl p-4 sm:p-5">
+          <h3 className="text-sm font-medium text-graphite-300 mb-3 sm:mb-4 flex items-center gap-2">
             <span className="w-1 h-3 rounded-full bg-amber" />
             Traffic Timeline
           </h3>
@@ -180,18 +182,18 @@ export default function Dashboard() {
 
       {/* Detected SNIs */}
       <motion.div {...fadeUp} transition={{ delay: 0.4 }}
-        className="bg-graphite-900 border border-graphite-700/30 rounded-xl p-5">
+        className="bg-graphite-900 border border-graphite-700/30 rounded-xl p-4 sm:p-5">
         <h3 className="text-sm font-medium text-graphite-300 mb-3 flex items-center gap-2">
           <span className="w-1 h-3 rounded-full bg-purple-500" />
           Detected SNI Domains
           <span className="text-[10px] font-mono text-graphite-600 ml-auto">{(stats.topSnis || []).length} domains</span>
         </h3>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5 sm:gap-2">
           {(stats.topSnis || []).map((sni, i) => (
             <motion.span key={sni}
               initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4 + i * 0.02 }}
-              className="px-3 py-1.5 text-xs font-mono bg-graphite-800 border border-graphite-700/30 rounded-lg text-graphite-400 hover:text-accent hover:border-accent/30 transition-colors cursor-default">
+              className="px-2 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs font-mono bg-graphite-800 border border-graphite-700/30 rounded-lg text-graphite-400 hover:text-accent hover:border-accent/30 transition-colors cursor-default break-all">
               {sni}
             </motion.span>
           ))}

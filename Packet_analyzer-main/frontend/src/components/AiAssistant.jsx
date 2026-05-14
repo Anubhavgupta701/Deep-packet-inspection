@@ -72,46 +72,46 @@ export default function AiAssistant() {
   }
 
   return (
-    <div className="flex flex-col h-[calc(100vh-7rem)]">
+    <div className="flex flex-col h-[calc(100vh-8rem)] sm:h-[calc(100vh-7rem)]">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-start sm:items-center justify-between mb-3 sm:mb-4 gap-2">
         <div>
-          <h2 className="text-xl font-semibold text-graphite-200 tracking-tight">AI Analyst</h2>
-          <p className="text-sm text-graphite-500">Contextual explanations for packets, sessions, and DPI concepts</p>
+          <h2 className="text-lg sm:text-xl font-semibold text-graphite-200 tracking-tight">AI Analyst</h2>
+          <p className="text-xs sm:text-sm text-graphite-500">Contextual explanations for packets, sessions, and DPI concepts</p>
         </div>
         <button onClick={clearChat}
-          className="px-3 py-1.5 text-xs bg-graphite-800 border border-graphite-700/40 rounded-lg text-graphite-500 hover:text-graphite-300 hover:border-graphite-600 transition-colors">
+          className="px-3 py-1.5 text-xs bg-graphite-800 border border-graphite-700/40 rounded-lg text-graphite-500 hover:text-graphite-300 hover:border-graphite-600 transition-colors shrink-0">
           Clear Chat
         </button>
       </div>
 
       {/* Quick actions */}
-      <div className="flex gap-2 mb-3">
+      <div className="flex gap-2 mb-3 overflow-x-auto pb-1">
         <button onClick={explainPacket}
-          className="flex items-center gap-1.5 px-3.5 py-2 text-xs bg-graphite-900 border border-graphite-700/40 rounded-lg text-graphite-400 hover:text-accent hover:border-accent/30 hover:bg-accent/5 transition-all duration-200">
+          className="flex items-center gap-1.5 px-3 sm:px-3.5 py-2 text-xs bg-graphite-900 border border-graphite-700/40 rounded-lg text-graphite-400 hover:text-accent hover:border-accent/30 hover:bg-accent/5 transition-all duration-200 shrink-0">
           <span className="text-sm">⟐</span> Explain Packet
         </button>
         <button onClick={explainSession}
-          className="flex items-center gap-1.5 px-3.5 py-2 text-xs bg-graphite-900 border border-graphite-700/40 rounded-lg text-graphite-400 hover:text-emerald hover:border-emerald/30 hover:bg-emerald/5 transition-all duration-200">
+          className="flex items-center gap-1.5 px-3 sm:px-3.5 py-2 text-xs bg-graphite-900 border border-graphite-700/40 rounded-lg text-graphite-400 hover:text-emerald hover:border-emerald/30 hover:bg-emerald/5 transition-all duration-200 shrink-0">
           <span className="text-sm">⊡</span> Explain Session
         </button>
       </div>
 
       {/* Chat area */}
       <div ref={chatRef}
-        className="flex-1 overflow-y-auto bg-graphite-900 border border-graphite-700/30 rounded-xl p-5 space-y-4 mb-3">
+        className="flex-1 overflow-y-auto bg-graphite-900 border border-graphite-700/30 rounded-xl p-3 sm:p-5 space-y-3 sm:space-y-4 mb-3 min-h-0">
         <AnimatePresence initial={false}>
           {messages.map((msg, i) => (
             <motion.div key={i}
               initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.2 }}
               className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[75%] rounded-xl text-sm leading-relaxed ${
+              <div className={`max-w-[90%] sm:max-w-[75%] rounded-xl text-sm leading-relaxed ${
                 msg.role === 'user'
-                  ? 'bg-accent/10 text-accent border border-accent/15 px-4 py-3'
+                  ? 'bg-accent/10 text-accent border border-accent/15 px-3 sm:px-4 py-2 sm:py-3'
                   : msg.error
-                    ? 'bg-rose/5 text-rose/80 border border-rose/15 px-4 py-3'
-                    : 'bg-graphite-800/80 text-graphite-300 border border-graphite-700/30 px-4 py-3'
+                    ? 'bg-rose/5 text-rose/80 border border-rose/15 px-3 sm:px-4 py-2 sm:py-3'
+                    : 'bg-graphite-800/80 text-graphite-300 border border-graphite-700/30 px-3 sm:px-4 py-2 sm:py-3'
               }`}>
                 {msg.role === 'assistant' && !msg.error && (
                   <div className="flex items-center gap-1.5 mb-1.5 text-[10px] uppercase tracking-wider text-graphite-500 font-medium">
@@ -119,7 +119,7 @@ export default function AiAssistant() {
                     DPI Analyst
                   </div>
                 )}
-                <div className="whitespace-pre-wrap">{msg.text}</div>
+                <div className="whitespace-pre-wrap break-words">{msg.text}</div>
               </div>
             </motion.div>
           ))}
@@ -139,12 +139,13 @@ export default function AiAssistant() {
         )}
       </div>
 
-      {/* Suggestions */}
-      <div className="flex flex-wrap gap-1.5 mb-2">
+      {/* Suggestions — horizontally scrollable on mobile */}
+      <div className="flex gap-1.5 mb-2 overflow-x-auto pb-1 -mx-1 px-1">
         {SUGGESTIONS.map(s => (
           <button key={s.q} onClick={() => send(s.q)}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] bg-graphite-900 border border-graphite-700/30 rounded-lg text-graphite-500 hover:text-graphite-300 hover:border-graphite-600/50 transition-all duration-200 truncate max-w-[260px]">
-            <span>{s.icon}</span> {s.q}
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-[11px] bg-graphite-900 border border-graphite-700/30 rounded-lg text-graphite-500 hover:text-graphite-300 hover:border-graphite-600/50 transition-all duration-200 shrink-0 max-w-[220px] sm:max-w-[260px]">
+            <span className="shrink-0">{s.icon}</span>
+            <span className="truncate">{s.q}</span>
           </button>
         ))}
       </div>
@@ -154,9 +155,9 @@ export default function AiAssistant() {
         <input value={input} onChange={e => setInput(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && !e.shiftKey && send()}
           placeholder="Ask about packets, sessions, protocols…"
-          className="flex-1 bg-graphite-800 border border-graphite-700/40 rounded-xl px-4 py-2.5 text-sm text-graphite-300 placeholder:text-graphite-600 outline-none focus:border-accent/40 transition-colors" />
+          className="flex-1 bg-graphite-800 border border-graphite-700/40 rounded-xl px-3 sm:px-4 py-2.5 text-sm text-graphite-300 placeholder:text-graphite-600 outline-none focus:border-accent/40 transition-colors min-w-0" />
         <button onClick={() => send()} disabled={loading || !input.trim()}
-          className="px-5 py-2.5 bg-accent hover:bg-accent-dim text-white text-sm font-medium rounded-xl transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed shadow-lg shadow-accent/10 hover:shadow-accent/20">
+          className="px-4 sm:px-5 py-2.5 bg-accent hover:bg-accent-dim text-white text-sm font-medium rounded-xl transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed shadow-lg shadow-accent/10 hover:shadow-accent/20 shrink-0">
           Send
         </button>
       </div>

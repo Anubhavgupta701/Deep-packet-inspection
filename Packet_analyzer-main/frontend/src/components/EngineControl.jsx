@@ -58,22 +58,22 @@ export default function EngineControl() {
     : 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
         <h2 className="text-lg font-semibold text-graphite-200">Engine Control</h2>
-        <p className="text-sm text-graphite-500">Monitor and run the C++ DPI engine</p>
+        <p className="text-xs sm:text-sm text-graphite-500">Monitor and run the C++ DPI engine</p>
       </div>
 
       {/* Status Panel */}
-      <div className="bg-graphite-900 border border-graphite-700/40 rounded-lg p-5">
-        <h3 className="text-sm font-medium text-graphite-300 mb-4">Engine Status</h3>
+      <div className="bg-graphite-900 border border-graphite-700/40 rounded-lg p-4 sm:p-5">
+        <h3 className="text-sm font-medium text-graphite-300 mb-3 sm:mb-4">Engine Status</h3>
         {err && !status && (
           <div className="text-xs text-rose bg-rose/10 border border-rose/20 rounded-md px-3 py-2 mb-3">
             {err}
           </div>
         )}
         {status ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             <div className="space-y-2">
               <StatusDot active={status.engineAvailable} label={status.simulationMode ? 'Simulation Mode' : 'Engine Binary'} />
               <p className="text-[10px] font-mono text-graphite-600 truncate pl-5" title={status.enginePath}>
@@ -111,8 +111,8 @@ export default function EngineControl() {
       </div>
 
       {/* Run Panel */}
-      <div className="bg-graphite-900 border border-graphite-700/40 rounded-lg p-5">
-        <div className="flex items-center justify-between mb-4">
+      <div className="bg-graphite-900 border border-graphite-700/40 rounded-lg p-4 sm:p-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
           <div>
             <h3 className="text-sm font-medium text-graphite-300">
               Run Engine
@@ -130,7 +130,7 @@ export default function EngineControl() {
           </div>
           <button onClick={runEngine}
             disabled={running || !status?.engineAvailable}
-            className={`relative px-6 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 ${
+            className={`relative px-5 sm:px-6 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 shrink-0 w-full sm:w-auto ${
               running
                 ? 'bg-amber/20 text-amber border border-amber/30 cursor-wait'
                 : status?.engineAvailable
@@ -140,7 +140,7 @@ export default function EngineControl() {
             {running && (
               <span className="absolute inset-0 rounded-lg bg-amber/10 animate-pulse" />
             )}
-            <span className="relative flex items-center gap-2">
+            <span className="relative flex items-center justify-center gap-2">
               {running ? (
                 <>
                   <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
@@ -184,7 +184,7 @@ export default function EngineControl() {
         {output && (
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
             className="bg-graphite-900 border border-graphite-700/40 rounded-lg overflow-hidden">
-            <div className="px-5 py-3 border-b border-graphite-700/40 flex items-center justify-between">
+            <div className="px-4 sm:px-5 py-3 border-b border-graphite-700/40 flex items-center justify-between">
               <h3 className="text-sm font-medium text-graphite-300">Engine Output</h3>
               {output.exitCode !== undefined && (
                 <span className={`px-2 py-0.5 rounded text-[10px] font-medium ${
@@ -195,11 +195,11 @@ export default function EngineControl() {
               )}
             </div>
             <div ref={outputRef}
-              className="p-4 max-h-[400px] overflow-y-auto font-mono text-xs text-graphite-400 whitespace-pre-wrap leading-relaxed bg-graphite-950/50">
+              className="p-3 sm:p-4 max-h-[300px] sm:max-h-[400px] overflow-y-auto font-mono text-xs text-graphite-400 whitespace-pre-wrap leading-relaxed bg-graphite-950/50 break-all">
               {output.stdout || output.output || JSON.stringify(output, null, 2)}
             </div>
             {output.stderr && (
-              <div className="px-4 py-3 border-t border-graphite-700/40 font-mono text-xs text-rose/80 whitespace-pre-wrap">
+              <div className="px-3 sm:px-4 py-3 border-t border-graphite-700/40 font-mono text-xs text-rose/80 whitespace-pre-wrap break-all">
                 {output.stderr}
               </div>
             )}
@@ -208,13 +208,13 @@ export default function EngineControl() {
       </AnimatePresence>
 
       {err && output === null && (
-        <div className="bg-rose/5 border border-rose/20 rounded-lg px-5 py-4 text-sm text-rose">
+        <div className="bg-rose/5 border border-rose/20 rounded-lg px-4 sm:px-5 py-3 sm:py-4 text-sm text-rose">
           {err}
         </div>
       )}
 
       {/* Info */}
-      <div className="bg-graphite-900/50 border border-graphite-700/20 rounded-lg px-5 py-4">
+      <div className="bg-graphite-900/50 border border-graphite-700/20 rounded-lg px-4 sm:px-5 py-3 sm:py-4">
         <p className="text-xs text-graphite-500 leading-relaxed">
           <span className="text-graphite-400 font-medium">How it works:</span>{' '}
           {status?.simulationMode ? (

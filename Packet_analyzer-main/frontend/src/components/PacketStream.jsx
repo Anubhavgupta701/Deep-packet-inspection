@@ -38,26 +38,26 @@ export default function PacketStream() {
   return (
     <div className="space-y-4">
       {/* Header */}
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-semibold text-graphite-200 tracking-tight">Packet Stream</h2>
-          <p className="text-sm text-graphite-500">
+          <h2 className="text-lg sm:text-xl font-semibold text-graphite-200 tracking-tight">Packet Stream</h2>
+          <p className="text-xs sm:text-sm text-graphite-500">
             {total} packets parsed • showing {Math.min(filtered.length, 150)} of {filtered.length} filtered
           </p>
         </div>
-        <div className="relative">
+        <div className="relative w-full sm:w-auto">
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-graphite-600 text-xs">⌕</span>
           <input value={filter} onChange={e => setFilter(e.target.value)}
             placeholder="Filter by IP, SNI, protocol…"
-            className="bg-graphite-800 border border-graphite-700/40 rounded-lg pl-8 pr-3 py-2 text-sm text-graphite-300 placeholder:text-graphite-600 w-72 outline-none focus:border-accent/40 transition-colors" />
+            className="bg-graphite-800 border border-graphite-700/40 rounded-lg pl-8 pr-3 py-2 text-sm text-graphite-300 placeholder:text-graphite-600 w-full sm:w-72 outline-none focus:border-accent/40 transition-colors" />
         </div>
       </div>
 
-      <div className="flex gap-4">
+      <div className="flex flex-col lg:flex-row gap-4">
         {/* Table */}
-        <div className="flex-1 bg-graphite-900 border border-graphite-700/30 rounded-xl overflow-hidden">
+        <div className="flex-1 bg-graphite-900 border border-graphite-700/30 rounded-xl overflow-hidden min-w-0">
           <div className="overflow-x-auto">
-            <table className="w-full text-xs">
+            <table className="w-full text-xs min-w-[640px]">
               <thead>
                 <tr className="text-left text-[10px] text-graphite-500 uppercase tracking-[0.12em] border-b border-graphite-700/30 bg-graphite-900/80">
                   <th className="px-3 py-3 w-10">#</th>
@@ -109,15 +109,15 @@ export default function PacketStream() {
           </div>
         </div>
 
-        {/* Detail panel */}
+        {/* Detail panel — full-width below table on mobile, side panel on lg+ */}
         <AnimatePresence>
           {selectedPacket && (
             <motion.div
-              initial={{ opacity: 0, x: 16, width: 0 }}
-              animate={{ opacity: 1, x: 0, width: 280 }}
-              exit={{ opacity: 0, x: 16, width: 0 }}
+              initial={{ opacity: 0, x: 16 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 16 }}
               transition={{ duration: 0.25 }}
-              className="shrink-0 bg-graphite-900 border border-graphite-700/30 rounded-xl overflow-hidden">
+              className="w-full lg:w-[280px] shrink-0 bg-graphite-900 border border-graphite-700/30 rounded-xl overflow-hidden">
               <div className="px-4 py-3 border-b border-graphite-700/30 flex items-center justify-between">
                 <h3 className="text-xs font-medium text-graphite-300">Packet #{selectedPacket.id}</h3>
                 <button onClick={() => setSelected(null)} className="text-graphite-600 hover:text-graphite-400 text-xs">✕</button>

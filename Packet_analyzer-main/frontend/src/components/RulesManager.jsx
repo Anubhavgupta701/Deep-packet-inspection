@@ -18,9 +18,9 @@ function RuleTag({ type, value, onRemove }) {
       style={{ background: c + '08', borderColor: c + '25' }}>
       <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: c }} />
       <span className="text-xs uppercase tracking-wider font-medium" style={{ color: c + 'aa' }}>{type}</span>
-      <span className="font-mono text-sm text-graphite-300">{value}</span>
+      <span className="font-mono text-sm text-graphite-300 break-all min-w-0">{value}</span>
       <button onClick={onRemove}
-        className="ml-auto w-5 h-5 rounded flex items-center justify-center text-graphite-600 opacity-0 group-hover:opacity-100 hover:text-rose hover:bg-rose/10 transition-all text-xs">
+        className="ml-auto w-5 h-5 rounded flex items-center justify-center text-graphite-600 opacity-0 group-hover:opacity-100 hover:text-rose hover:bg-rose/10 transition-all text-xs shrink-0">
         ✕
       </button>
     </motion.div>
@@ -71,23 +71,23 @@ export default function RulesManager() {
   const activeConfig = RULE_TYPES.find(r => r.key === activeType);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
         <h2 className="text-lg font-semibold text-graphite-200">Rule Manager</h2>
-        <p className="text-sm text-graphite-500">
+        <p className="text-xs sm:text-sm text-graphite-500">
           Manage blocking rules — {totalRules} active rule{totalRules !== 1 ? 's' : ''}
         </p>
       </div>
 
       {/* Add Rule Panel */}
-      <div className="bg-graphite-900 border border-graphite-700/40 rounded-lg p-5">
-        <h3 className="text-sm font-medium text-graphite-300 mb-4">Add New Rule</h3>
+      <div className="bg-graphite-900 border border-graphite-700/40 rounded-lg p-4 sm:p-5">
+        <h3 className="text-sm font-medium text-graphite-300 mb-3 sm:mb-4">Add New Rule</h3>
 
         {/* Rule type selector */}
-        <div className="flex gap-2 mb-4">
+        <div className="flex flex-wrap gap-2 mb-3 sm:mb-4">
           {RULE_TYPES.map(rt => (
             <button key={rt.key} onClick={() => { setActiveType(rt.key); setInputVal(''); }}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200 border ${
+              className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200 border ${
                 activeType === rt.key
                   ? 'border-opacity-40 shadow-lg'
                   : 'bg-graphite-800 border-graphite-700/40 text-graphite-500 hover:text-graphite-300 hover:border-graphite-600'
@@ -95,14 +95,15 @@ export default function RulesManager() {
               style={activeType === rt.key ? {
                 background: rt.color + '12', borderColor: rt.color + '40', color: rt.color
               } : {}}>
-              <span className="text-base">{rt.icon}</span>
-              {rt.label}
+              <span className="text-sm sm:text-base">{rt.icon}</span>
+              <span className="hidden xs:inline">{rt.label}</span>
+              <span className="xs:hidden">{rt.key.toUpperCase()}</span>
             </button>
           ))}
         </div>
 
         {/* Input row */}
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <div className="relative flex-1">
             <input value={inputVal} onChange={e => setInputVal(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && addRule()}
@@ -110,7 +111,7 @@ export default function RulesManager() {
               className="w-full bg-graphite-800 border border-graphite-700/50 rounded-lg px-4 py-2.5 text-sm text-graphite-300 placeholder:text-graphite-600 outline-none focus:border-accent/50 font-mono transition-colors" />
           </div>
           <button onClick={addRule} disabled={loading || !inputVal.trim()}
-            className="px-5 py-2.5 bg-accent hover:bg-accent-dim text-white text-sm font-medium rounded-lg transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed shadow-lg shadow-accent/20 hover:shadow-accent/30">
+            className="px-5 py-2.5 bg-accent hover:bg-accent-dim text-white text-sm font-medium rounded-lg transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed shadow-lg shadow-accent/20 hover:shadow-accent/30 shrink-0">
             {loading ? 'Adding…' : 'Add Rule'}
           </button>
         </div>
@@ -129,9 +130,9 @@ export default function RulesManager() {
       </div>
 
       {/* Active Rules */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {/* Blocked IPs */}
-        <div className="bg-graphite-900 border border-graphite-700/40 rounded-lg p-5">
+        <div className="bg-graphite-900 border border-graphite-700/40 rounded-lg p-4 sm:p-5">
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-medium text-graphite-300">Blocked IPs</h3>
             <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-rose/10 text-rose">{rules.blockedIps.length}</span>
@@ -149,7 +150,7 @@ export default function RulesManager() {
         </div>
 
         {/* Blocked Apps */}
-        <div className="bg-graphite-900 border border-graphite-700/40 rounded-lg p-5">
+        <div className="bg-graphite-900 border border-graphite-700/40 rounded-lg p-4 sm:p-5">
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-medium text-graphite-300">Blocked Apps</h3>
             <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-amber/10 text-amber">{rules.blockedApps.length}</span>
@@ -167,7 +168,7 @@ export default function RulesManager() {
         </div>
 
         {/* Blocked Domains */}
-        <div className="bg-graphite-900 border border-graphite-700/40 rounded-lg p-5">
+        <div className="bg-graphite-900 border border-graphite-700/40 rounded-lg p-4 sm:p-5">
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-medium text-graphite-300">Blocked Domains</h3>
             <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-400">{rules.blockedDomains.length}</span>
@@ -186,7 +187,7 @@ export default function RulesManager() {
       </div>
 
       {/* Info panel */}
-      <div className="bg-graphite-900/50 border border-graphite-700/20 rounded-lg px-5 py-4">
+      <div className="bg-graphite-900/50 border border-graphite-700/20 rounded-lg px-4 sm:px-5 py-3 sm:py-4">
         <p className="text-xs text-graphite-500 leading-relaxed">
           <span className="text-graphite-400 font-medium">How it works:</span> Rules correspond to the C++ DPI engine's
           RuleManager — blocking by IP (exact match), application type (e.g. YOUTUBE, NETFLIX), or SNI domain.
