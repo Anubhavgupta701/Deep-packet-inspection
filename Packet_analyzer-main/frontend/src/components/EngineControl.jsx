@@ -75,15 +75,15 @@ export default function EngineControl() {
         {status ? (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="space-y-2">
-              <StatusDot active={status.engineAvailable} label="Engine Binary" />
+              <StatusDot active={status.engineAvailable} label={status.simulationMode ? 'Simulation Mode' : 'Engine Binary'} />
               <p className="text-[10px] font-mono text-graphite-600 truncate pl-5" title={status.enginePath}>
-                {status.enginePath?.split(/[/\\]/).pop() || '—'}
+                {status.simulationMode ? 'sample data' : (status.enginePath?.split(/[/\\]/).pop() || '—')}
               </p>
             </div>
             <div className="space-y-2">
-              <StatusDot active={status.inputPcapAvailable} label="Input PCAP" />
+              <StatusDot active={status.inputPcapAvailable} label="Input Data" />
               <p className="text-[10px] font-mono text-graphite-600 truncate pl-5" title={status.inputPcap}>
-                {status.inputPcap?.split(/[/\\]/).pop() || '—'}
+                {status.simulationMode ? 'sample_packets.json' : (status.inputPcap?.split(/[/\\]/).pop() || '—')}
               </p>
             </div>
             <div className="space-y-2">
@@ -114,9 +114,18 @@ export default function EngineControl() {
       <div className="bg-graphite-900 border border-graphite-700/40 rounded-lg p-5">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-sm font-medium text-graphite-300">Run Engine</h3>
+            <h3 className="text-sm font-medium text-graphite-300">
+              Run Engine
+              {status?.simulationMode && (
+                <span className="ml-2 px-2 py-0.5 text-[10px] font-mono bg-amber/10 text-amber border border-amber/20 rounded">
+                  simulation
+                </span>
+              )}
+            </h3>
             <p className="text-xs text-graphite-500 mt-0.5">
-              Execute the DPI engine with current blocking rules applied
+              {status?.simulationMode
+                ? 'Analyze sample packet data with current blocking rules'
+                : 'Execute the DPI engine with current blocking rules applied'}
             </p>
           </div>
           <button onClick={runEngine}
@@ -207,10 +216,18 @@ export default function EngineControl() {
       {/* Info */}
       <div className="bg-graphite-900/50 border border-graphite-700/20 rounded-lg px-5 py-4">
         <p className="text-xs text-graphite-500 leading-relaxed">
-          <span className="text-graphite-400 font-medium">How it works:</span> This panel spawns the C++ DPI engine binary
-          (<code className="text-graphite-400 text-[11px]">dpi_engine.exe</code>) with your configured blocking rules as CLI arguments.
-          The engine reads the input PCAP, applies DPI classification and rule matching, then produces filtered output.
-          Results are displayed in real-time after processing completes.
+          <span className="text-graphite-400 font-medium">How it works:</span>{' '}
+          {status?.simulationMode ? (
+            <>This panel runs a simulated DPI analysis against pre-captured sample packet data.
+            Your configured blocking rules are applied to classify and filter packets.
+            Results include application breakdown, SNI detection, and blocked packet details.
+            <span className="text-amber/60 ml-1">(Simulation mode — no native engine binary on this server)</span></>
+          ) : (
+            <>This panel spawns the C++ DPI engine binary
+            (<code className="text-graphite-400 text-[11px]">dpi_engine.exe</code>) with your configured blocking rules as CLI arguments.
+            The engine reads the input PCAP, applies DPI classification and rule matching, then produces filtered output.
+            Results are displayed in real-time after processing completes.</>
+          )}
         </p>
       </div>
     </div>
