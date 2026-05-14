@@ -33,6 +33,24 @@ const DEFAULT_INPUT_PCAP = path.join(PROJECT_ROOT, 'test_dpi.pcap');
 const DEFAULT_OUTPUT_PCAP = path.join(PROJECT_ROOT, 'output.pcap');
 const ENGINE_PATH = path.join(PROJECT_ROOT, 'dpi_engine.exe');
 
+// Fallback sample data for when PCAP files are unavailable (e.g. on Render)
+const SAMPLE_DATA_PATH = path.join(__dirname, '..', 'data', 'sample_packets.json');
+let _cachedSamplePackets = null;
+
+function getSamplePackets() {
+  if (_cachedSamplePackets) return _cachedSamplePackets;
+  try {
+    if (fs.existsSync(SAMPLE_DATA_PATH)) {
+      _cachedSamplePackets = JSON.parse(fs.readFileSync(SAMPLE_DATA_PATH, 'utf-8'));
+      console.log(`[dpiConnector] Loaded ${_cachedSamplePackets.length} sample packets from JSON fallback`);
+      return _cachedSamplePackets;
+    }
+  } catch (e) {
+    console.error('[dpiConnector] Failed to load sample data:', e.message);
+  }
+  return [];
+}
+
 // ─── PCAP binary constants ──────────────────────────────────
 const PCAP_MAGIC = 0xa1b2c3d4;
 const PCAP_GLOBAL_HEADER_LEN = 24;
@@ -73,7 +91,7 @@ function sniToApp(sni) {
 
 function parsePcapFile(filePath) {
   if (!filePath) filePath = DEFAULT_INPUT_PCAP;
-  if (!fs.existsSync(filePath)) return [];
+  if (!fs.existsSync(filePath)) return getSamplePackets();
 
   const buf = fs.readFileSync(filePath);
   if (buf.length < PCAP_GLOBAL_HEADER_LEN) return [];
